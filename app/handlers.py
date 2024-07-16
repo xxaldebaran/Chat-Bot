@@ -57,7 +57,7 @@ async def ai(callback: CallbackQuery):
 async def cs(callback: CallbackQuery):
     await callback.answer("You picked option CS.")
     await callback.message.answer("You picked CS.")
-
+ 
 @router.callback_query(F.data == "physics")
 async def physics(callback: CallbackQuery):
     await callback.answer("You picked option Physics.")
