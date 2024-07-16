@@ -33,7 +33,7 @@ async def register_email(message: Message, state: FSMContext):
 @router.message(CommandStart())
 async def cmd_start(message: Message):
     await message.answer("Hi there!", reply_markup=buttons.main)
-    await message.reply("What`s poping?")
+    # await message.reply("What`s poping?")
 
 @router.message(Command('help'))
 async def cmd_help(message: Message):
@@ -43,12 +43,30 @@ async def cmd_help(message: Message):
 async def dad_joke(message: Message):
     await message.answer("Do you know why you never see elephants hiding in trees? It`s because they`re so good at it.")
 
-@router.message(F.text == "List")
-async def list(message: Message):
-    await message.answer("Pick an option.", reply_markup=buttons.list)
+@router.message(F.text == "STEM 🔭")
+async def stem(message: Message):
+    await message.answer("Pick an option.", reply_markup=buttons.stem)
 
 
-@router.callback_query(F.data == "option-1")
-async def option1(callback: CallbackQuery):
-    await callback.answer("You picked option.")
-    await callback.message.answer("You picked option 1.")
+@router.callback_query(F.data == "ai")
+async def ai(callback: CallbackQuery):
+    await callback.answer("You picked option AI.")
+    await callback.message.answer("You picked AI.")
+
+@router.callback_query(F.data == "cs")
+async def cs(callback: CallbackQuery):
+    await callback.answer("You picked option CS.")
+    await callback.message.answer("You picked CS.")
+
+@router.callback_query(F.data == "physics")
+async def physics(callback: CallbackQuery):
+    await callback.answer("You picked option Physics.")
+    await callback.message.answer("You picked Physics.")
+
+@router.message(F.text == "About Us 🛈")
+async def aboutus(message: Message):
+    await message.answer("This bot is created by Daria.")
+    
+@router.message(F.text == "Contacts 📱")
+async def contacts(message: Message):
+    await message.answer("My email: darinkatovstogan@gmail.com")
