@@ -1,9 +1,10 @@
 from aiogram import Bot, Dispatcher, F
 import asyncio
 from app.handlers import router
-import os
+from app.db.models import async_main 
 
 async def main():
+    await async_main()  # Connect to the database. This should be done before starting the bot polling.
     bot = Bot(token = '')
     disp = Dispatcher()
 
