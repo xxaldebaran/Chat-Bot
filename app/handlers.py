@@ -8,6 +8,37 @@ import app.db.requests as rq
 
 router = Router()
 
+@router.message(CommandStart())
+async def cmd_start(message: Message):
+    await rq.set_user(message.from_user.id)
+    await message.answer('Hi there!', reply_markup=buttons.main)
+
+
+@router.message(F.text == 'STEM 🔭')
+async def catalog(message: Message):
+    await message.answer('Pick a category:', reply_markup=await buttons.categories())
+
+
+@router.callback_query(F.data.startswith('category_'))
+async def category(callback: CallbackQuery):
+    await callback.message.answer('Pick an option from the category:',
+                                  reply_markup=await buttons.items(callback.data.split('_')[1]))
+
+
+@router.callback_query(F.data.startswith('item_'))
+async def category(callback: CallbackQuery):
+    item_data = await rq.get_item(callback.data.split('_')[1])
+    await callback.message.answer(f'Name: {item_data.name}\nDescription: {item_data.description}\nLevel: {item_data.level}$')
+
+# router = Router()
+
+# @router.message(CommandStart())
+# async def cmd_start(message: Message):
+#     await rq.set_user(message.from_user.id)
+#     await message.answer("Welcome to the STEM bot!", reply_markup=buttons.main)
+#     # await message.reply("What`s poping?")
+
+
 # class RegisterHandler(StatesGroup):
 #     name = State()
 #     email = State()
@@ -29,23 +60,6 @@ router = Router()
 #     data = await state.get_data()
 #     await message.answer(f"Hi there {data['name']}! Hope you enjoy STEM bot!.")
 #     await state.clear()
-
-
-@router.message(CommandStart())
-async def cmd_start(message: Message):
-    await rq.set_user(message.from_user.id)
-    await message.answer("Welcome to the STEM bot!", reply_markup=buttons.main)
-    # await message.reply("What`s poping?")
-
-@router.message(F.text == "Cataloge 📚")
-async def cataloge(message:Message):
-    await message.answer('Pick a category', reply_markup = await buttons.categories())
-
-
-# @router.callback_query(F.data.startwith)
-
-
-
 
 # @router.message(Command('help'))
 # async def cmd_help(message: Message):
@@ -75,10 +89,10 @@ async def cataloge(message:Message):
 #     await callback.answer("You picked option Physics.")
 #     await callback.message.answer("You picked Physics.")
 
-# @router.message(F.text == "About Us 🛈")
-# async def aboutus(message: Message):
-#     await message.answer("This bot is created by Daria.")
+@router.message(F.text == "About Us 🛈")
+async def aboutus(message: Message):
+    await message.answer("This bot is created by Daria.")
     
-# @router.message(F.text == "Contacts 📱")
-# async def contacts(message: Message):
-#     await message.answer("My email: darinkatovstogan@gmail.com")
+@router.message(F.text == "Contacts 📱")
+async def contacts(message: Message):
+    await message.answer("My email: darinkatovstogan@gmail.com")
